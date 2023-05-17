@@ -1,0 +1,269 @@
+\documentclass[UKenglish]{beamer}
+
+
+\usetheme[NoLogo, NoFinalFrame]{MathDeptX}
+
+
+\usepackage[utf8]{inputenx} % For æ, ø, å
+\usepackage{babel}          % Automatic translations
+\usepackage{csquotes}       % Quotation marks
+\usepackage{microtype}      % Improved typography
+\usepackage{amssymb}        % Mathematical symbols
+\usepackage{mathtools}      % Mathematical symbols
+\usepackage[absolute, overlay]{textpos} % Arbitrary placement
+\setlength{\TPHorizModule}{\paperwidth} % Textpos units
+\setlength{\TPVertModule}{\paperheight} % Textpos units
+\usepackage{tikz}
+\usepackage{ragged2e}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usetikzlibrary{overlay-beamer-styles}  % Overlay effects for TikZ
+
+
+\author{Volintine Ander \\ \href{mailto:volintine_21001524@utp.edu.my}{ \small volintine\_21001524@utp.edu.my} }
+\institute{\hspace{-10pt}Volintine Ander \hspace{0.5em}| \hspace{0.5em} Universiti Teknologi PETRONAS}
+\title{AI 101: Your First Step into Machine Learning with Tensorflow}
+\subtitle{Workshop afternoon session}
+
+\begin{document}
+
+
+% Use
+%
+%     \begin{frame}[allowframebreaks]{Title}
+%
+% if the TOC does not fit one frame.
+\begin{frame}{Table of contents}
+    \tableofcontents %using \tableofcontents[currentsection] after a section definition will grey out other sections except for the section whose definition is immediately before \tableofcontents[currentsection]
+\end{frame}
+
+
+\section{What is a model, really?}
+\SectionPage
+
+\subsection{Handling training datasets}
+\begin{frame}{Dividing the dataset}
+    \vspace{-0.8cm}
+    \begin{columns}[onlytextwidth]
+        \begin{column}{0.9\textwidth}
+        \justify{\small    
+        Explore this: \url{https://mlu-explain.github.io/train-test-validation/} \par
+        A dataset cannot be completely used just for training, because there will be no data left for hyperparameter tuning and for testing.
+        }
+                \begin{alertblock}{\small \textbf{Training set}}
+                    \justify{\small
+                    Data used for training (adjusting model parameters)
+                    }
+                \end{alertblock}
+
+                \begin{alertblock}{\small \textbf{Validation set}}
+                    \justify{
+                    \small
+                    Data used for adjusting hyperparameters - learning rate, regularization constant, etc.
+                    }
+                \end{alertblock}
+
+
+                \begin{alertblock}{\small \textbf{Testing set}}
+                    \justify{
+                    \small
+                    Data used to evaluate the model's performance
+                    }
+                \end{alertblock}
+                    
+        \end{column}
+       
+    \end{columns}
+    
+\end{frame}
+
+\subsection{What a model is \emph{not}}
+\begin{frame}{What a model is \emph{not}}
+    \begin{alertblock}{\small \textbf{Science fiction vs. reality}}
+    \justify{
+    Currently, a model can only do reasonably well on input that resembles the training dataset. As of now, there is no general artificial intelligence that can learn independently without retraining, the same way a human can.
+    }
+    \end{alertblock}
+    \vspace{-12pt}
+    \begin{columns}[onlytextwidth]
+        \begin{column}{0.5\textwidth}
+            \justify{
+                LLMs like GPT-4 are trained on extremely large and diverse datasets which seem very impressive to the end user. \par
+                Indeed the multimodality and versatility of GPT-4 is undeniably impressive from a technical perspective as well, but it is still far from a general intelligence. \par
+            }          
+        \end{column}
+
+        \begin{column}{0.45\textwidth}
+            \begin{figure}
+                \vspace{-5pt}
+                \centering
+                \includegraphics[width = \textwidth, scale = 0.5]{figures/terminator.jpg}
+            \end{figure}
+        \end{column}
+        
+    \end{columns}
+
+\end{frame}
+
+
+\section{Overfitting vs. Underfitting}
+\SectionPage
+
+\subsection{Definitions}
+\subsection{Solutions}
+\begin{frame}{Definitions}
+    \begin{columns}[onlytextwidth]
+        \begin{column}{0.48\textwidth}
+            \begin{alertblock}{\small \textbf{Underfitting}}
+            \justify{\small
+            Occurs when a model is too simple (low complexity) and is unable to adequately capture features in the dataset.
+            }
+            \end{alertblock}
+
+            \begin{alertblock}{\small \textbf{Overfitting}}
+                \justify{\small
+                Occurs when a model is too optimized for the training dataset leading to poor performance on the validation and testing dataset. The model is unable to generalize on new data it was not trained on.
+                }
+                
+            \end{alertblock}
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \begin{alertblock}{\small \textbf{Solutions}}
+
+            \begin{enumerate}
+                \item {\small
+                Larger dataset \par
+                The most reliable solution
+                }
+                \vspace{5pt}
+                \item {\small    
+                Regularization \par
+                Adjusts the objective function to prevent over/underfitting during training
+                }
+                \vspace{-5pt}
+                \item {\small
+                Use a model with higher complexity \par
+                e.g. Linear regression models cannot capture more complex, nonlinear patterns. 
+                }
+            \end{enumerate}
+            
+            \end{alertblock}
+        \end{column}
+        
+    \end{columns}
+
+\end{frame}
+
+\section{Contemporary applications}
+\SectionPage
+\subsection*{Generative AI}
+\subsection*{Machine translation}
+\subsection*{Computer vision}
+
+\begin{frame}{}
+\vspace{-25pt}
+    \begin{columns}[onlytextwidth]
+        \begin{column}{0.48\textwidth}
+            \begin{alertblock}{\small \textbf{Machine translation}}
+            \justify{\small
+            Translation services like Google Translate rely on deep learning to generate translations. They can be useful to get a rough grasp of information in a foreign language, and can help in \alert{facilitating simple conversations} between individuals that don't speak a common language.
+            }
+            \end{alertblock}
+
+            \begin{alertblock}{\small \textbf{Computer vision}}
+                \justify{\small
+                Models can be trained on visual data. Vision models have wide-ranging applications from \alert{autonomous driving}, \alert{industrial automation}, \alert{home security}, \alert{medical imaging and diagnosis}, and many more.
+                }
+                
+            \end{alertblock}
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \begin{alertblock}{\small \textbf{Generative AI}}
+                \justify{\small
+                AI can be used to generate content (text, image, audio) that \alert{mimic certain desirable patterns}. For example, Stable Diffusion, DALL-E, and Midjourney can be used to \alert{generate images} based on a text prompt. \par \vspace{10pt}
+                Google's MusicLM can \alert{generate music} based on prompts, and LLMs such as ChatGPT and Bing Chat can be used to \alert{generate text} output.
+                }
+            
+            \end{alertblock}
+        \end{column}
+        
+    \end{columns}
+
+\end{frame}
+
+
+
+\section{Current issues}
+\SectionPage
+\subsection{Hallucination in Large Language Models (LLMs)}
+\begin{frame}{Hallucination}
+    \begin{columns}[onlytextwidth]
+        \begin{column}{0.52\textwidth}
+            \vspace{5pt}
+            \justify{
+            In Large Language Models, the model can produce linguistically coherent output that is factually wrong. When an LLM outputs something that is factually inaccurate, this is called \par \alert{hallucination}.
+            \par \vspace{5pt}
+            
+            This term is usually used in the context of NLP, but it may also be applied in other AIs that are confident in an output that is \alert{wrong}.
+            }
+        \end{column}
+        
+        \begin{column}{0.45\textwidth}
+            \vspace{-20pt}
+            \begin{figure}
+                \centering
+                \includegraphics[width = \textwidth, scale = 0.4]{figures/hallucination.jpg}
+                \end{figure}
+        \end{column}
+        
+    \end{columns}
+\end{frame}
+
+\subsection{Ethics of using human-generated content}
+\begin{frame}{Ethics of using human-generated content}
+    \begin{columns}[onlytextwidth]
+        \begin{column}{0.52\textwidth}
+            \vspace{-5pt}
+            \justify{
+            Generally, machine learning requires a \alert{large amount of data}. The sourcing of data is not always easy, especially considering the sheer volume required. \par \vspace{5pt}
+
+
+            This is also not yet fully regulated by law, resulting in works by artists being used \alert{without their explicit knowledge and consent}. \par \vspace{5pt}
+
+            It is important that datasets are ethically compiled from sources in which the \alert{people involved in their creation are informed} of what purpose their data is being used for.
+            }
+        \end{column}
+        
+        \begin{column}{0.45\textwidth}
+            \vspace{15pt}
+            \begin{figure}
+                \centering
+                \includegraphics[width = \textwidth, scale = 0.4]{figures/zucc.jpg}
+                \end{figure}
+        \end{column}
+        
+    \end{columns}
+\end{frame}
+
+
+
+\section{Activity: Train a neural network to detect pneumonia\\from chest x-rays}
+\SectionPage
+
+\begin{frame}{Image classifier model}
+  \begin{alertblock}{\textbf{Task 4: Detect pneumonia from x-rays}}
+      Go through the Colab notebook given. Once you have completed the
+      notebook, try to answer these questions: \par \vspace{5pt}
+      What is an \alert{epoch}? \par \vspace{3pt}
+      What \alert{information about your model's performance} can you get from the the Training and Validation Accuracy vs. Epoch plot? \par \vspace{3pt}
+      What is \alert{the next step} after training and validation? \par
+      \alert{Hint: } A dataset is always divided into three groups for training, validation, and testing. \par \vspace{3pt}
+  \end{alertblock}
+
+\end{frame}
+
+\end{document}
