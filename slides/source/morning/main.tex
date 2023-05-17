@@ -1,0 +1,496 @@
+\documentclass[UKenglish]{beamer}
+
+
+\usetheme[NoLogo, NoFinalFrame]{MathDeptX}
+
+
+\usepackage[utf8]{inputenx} % For æ, ø, å
+\usepackage{babel}          % Automatic translations
+\usepackage{csquotes}       % Quotation marks
+\usepackage{microtype}      % Improved typography
+\usepackage{amssymb}        % Mathematical symbols
+\usepackage{mathtools}      % Mathematical symbols
+\usepackage[absolute, overlay]{textpos} % Arbitrary placement
+\setlength{\TPHorizModule}{\paperwidth} % Textpos units
+\setlength{\TPVertModule}{\paperheight} % Textpos units
+\usepackage{tikz}
+\usepackage{ragged2e}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usetikzlibrary{overlay-beamer-styles}  % Overlay effects for TikZ
+
+
+\author{Volintine Ander \\ \href{mailto:volintine_21001524@utp.edu.my}{ \small volintine\_21001524@utp.edu.my} }
+\institute{\hspace{-10pt}Volintine Ander \hspace{0.5em}| \hspace{0.5em} Universiti Teknologi PETRONAS}
+\title{AI 101: Your First Step into Machine Learning with Tensorflow}
+\subtitle{Workshop morning session}
+
+\begin{document}
+
+
+% Use
+%
+%     \begin{frame}[allowframebreaks]{Title}
+%
+% if the TOC does not fit one frame.
+\begin{frame}{Table of contents}
+    \tableofcontents %using \tableofcontents[currentsection] after a section definition will grey out other sections except for the section whose definition is immediately before \tableofcontents[currentsection]
+\end{frame}
+
+
+\section{Basic ideas}
+\SectionPage
+
+\subsection{Weights \& biases}
+\begin{frame}{Weights and biases}
+    \vspace{-0.85cm}
+    \begin{columns}[onlytextwidth]
+        \begin{column}{0.5\textwidth}
+        \justify{    
+        We can transform a number linearly\footnotemark using the equation of a straight line $y=wx+b$
+        }
+                \begin{definition}
+                    \justify{
+                    For an input layer with $n$ nodes, the output of the layer is expressed as a weighted sum
+                    }
+                    \begin{equation*}
+                        y = \sum_{i}^{n} (w_i x_i) + b
+                    \end{equation*}
+                    where $w_i$ is the weight of the $i$th node and $b$ is the bias.
+                \end{definition}
+        \end{column}
+
+        \begin{column}{0.45\textwidth}
+            \justify{
+            $x_i$ can be thought of as our input, and $y$ is the network's prediction given the values of $x_i$. A node can be thought of as the model’s neuron.
+            }
+            \begin{figure}
+                \vspace{20pt}
+                \centering
+                \includegraphics[width = \textwidth, scale = 0.5]{figures/linreg_network.jpg}
+            \end{figure}
+    
+        \end{column}
+        
+        \footnotetext[1]{Some mathematicians are less than excited about people using \emph{linear} to mean a first-degree polynomial.}
+    
+    \end{columns}
+    
+\end{frame}
+
+\begin{frame}{Weights \& biases}
+    \begin{alertblock}{\small \textbf{Think about this}}
+    \justify{
+    The most basic artificial ‘intelligence’ is a straight line of best fit. When one performs experiments and plots the measured samples, one can try to find a straight line that minimizes the distances of each sample point from the line.
+    }
+    \end{alertblock}
+    \vspace{-12pt}
+    \begin{columns}[onlytextwidth]
+        \begin{column}{0.45\textwidth}
+            \justify{
+                In this case, the equation of best-fitting straight line is the model. \par\vspace{5pt}
+                This model can predict the values of $y$, given $x$. \par
+                \vspace{5pt}
+                This allows us to get an approximation of the variable $y$ given $x$ without redoing the experiment to measure $y$ for a particular $x$.
+            }          
+        \end{column}
+
+        \begin{column}{0.45\textwidth}
+            \begin{figure}
+                \vspace{-20pt}
+                \centering
+                \includegraphics[width = \textwidth, scale = 0.5]{figures/bestfitline.jpg}
+            \end{figure}
+        \end{column}
+        
+    \end{columns}
+
+\end{frame}
+
+
+
+\subsection{Nodes, layers, and activation functions}
+\begin{frame}{Nodes, layers, \& activation functions}
+    \begin{columns}[onlytextwidth]
+        \begin{column}{0.45\textwidth}
+        \vspace{5pt}
+        \justify{
+            A node is the simplest unit in a network. Connections between nodes are called \alert{synapses}. \par \vspace{5pt}
+            We can take multiple nodes together to form a single layer. At the input layer, each node will take one input.
+            \par \vspace{5pt}
+            At the output layer, the number of nodes is not necessarily the same as at the input.
+            }
+  
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+            \vspace{15pt}
+            \begin{figure}
+                \centering
+                \includegraphics[width = \textwidth, scale = 0.5]{figures/layerfig.jpg}
+            \end{figure}
+               
+        \end{column}
+        
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Hidden layers}
+    \begin{columns}[onlytextwidth]
+        \begin{column}{0.52\textwidth}
+            \vspace{5pt}
+            \justify{
+            In between the input and output layers are \par ‘hidden’ layers. Hidden layers are used to extract relevant features (e.g., specific shape and color combinations). \par \vspace{5pt}
+            
+            Each node’s output goes through an activation function. Activation functions are important because they add some nonlinearity\footnotemark \hspace{4pt}to the network. This is key to allowing a network to learn more complex patterns.
+            }
+        \end{column}
+
+        \footnotetext{\par Nonlinearity can also occur from rounding errors during training, without activation functions. \par
+        Read this paper for a jocular explanation: \url{http://tom7.org/grad/} \par
+        Corresponding video by the author: \url{https://youtu.be/Ae9EKCyI1xU}
+        }
+        
+        \begin{column}{0.45\textwidth}
+            \vspace{-60pt}
+            \begin{figure}
+                \centering
+                \includegraphics[width = \textwidth, scale = 0.4]{figures/hidden.jpg}
+                \includegraphics[width = 0.5\textwidth, scale = 0.05]{figures/visual.jpg}
+            \end{figure}
+        \end{column}
+        
+    \end{columns}
+\end{frame}
+
+
+
+\subsection{Loss function}
+\begin{frame}{Loss function}
+    \justify{
+    The loss function, simply put, is a way of representing errors in the model’s predictions. Like activation functions, there are many kinds of loss functions to choose from. The loss function plays an important role in backpropagation, which is a way of providing feedback to the network given its output and a predetermined expected output.
+    }
+    \begin{definition}[Mean square error]
+        MSE is a popular loss function used in machine learning.
+        \begin{equation*}
+            \text{MSE} = \frac{1}{N} \sum_{(x, y) \in D} (y - \text{prediction}(x))^2
+        \end{equation*}
+        where $D$ is a dataset of the ordered pairs $(x, y)$ where $x$ is a \alert{feature} (input variable) used for prediction and $y$ is the \alert{label} (thing predicted). $N$ is the number of $(x,y)$ pairs in $D$.
+    \end{definition}
+\end{frame}
+
+
+
+
+
+\section{How computers learn}
+\SectionPage
+
+\subsection{Representing data}
+\begin{frame}{Data encoding}
+    \begin{columns}[onlytextwidth]
+        \begin{column}{0.48\textwidth}
+            \begin{alertblock}{\textbf{Encoding}}
+            
+            \justify{\small
+            All information on a computer is represented in \alert{binary}.
+            \par \vspace{5pt}
+            This means that all forms of information, be it text, sound, images, are all preprocessed into huge arrays of numbers before a model can be trained on the dataset.
+            }
+            \end{alertblock}
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \begin{alertblock}{\textbf{Word embedding}}
+
+            \begin{enumerate}
+                \item {\small
+                Words can be grouped together as \alert{vectors in multidimensional space}.
+                }
+                
+                \item {\small    
+                The coordinates of each word are correlated with how related they are to other words.
+                }
+            \end{enumerate}
+            
+            \justify{\small
+            In a model, these coordinates are learned parameters that are tuned based on how well the model does on a specific task such as \emph{sentiment analysis}.
+            }
+            \end{alertblock}
+        \end{column}
+        
+    \end{columns}
+
+\end{frame}
+
+\begin{frame}{Tokenization}
+    \begin{columns}[onlytextwidth]
+        \begin{column}{0.48\textwidth}
+        \vspace{-0.8cm}
+            \justify{\small
+            In Natural Language Processing (NLP), text needs to be broken up so that a model can ‘see’ patterns that matter in human language. These little pieces of information are called tokens, which are usually words, pieces of words, punctuation, and numbers.
+
+            }
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+        \vspace{-0.8cm}
+            \begin{alertblock}{\textbf{Problem}}
+                \justify{\small
+                The issue is that it will be harder for the model to learn grammar, which often manifests in each word as inflected forms. Treating affixes as tokens by cutting them off words will make it more obvious to the model.
+
+                }
+            \end{alertblock}
+            
+        \end{column}
+    \end{columns}
+    
+        \begin{alertblock}{\small \textbf{Example: Kadazandusun}}
+            \justify{
+            \small An agglutinative language from Sabah. Consider the root word \emph{akan} (to eat).
+            }
+            \vspace{-4pt}
+            \begin{center}
+            \begin{tabularx}{0.95\textwidth}    
+            {
+                | >{\RaggedRight\arraybackslash}X
+                | >{\RaggedRight\arraybackslash}X |
+            }
+            \hline
+            \emph{makan} & having a meal \\
+            \hline
+            \emph{taakanon} & food \\
+            \hline
+            \emph{miakan} & two people eating each other \\
+            \hline
+            \emph{mangakan} & is/are eating \\
+            \hline
+            \emph{minakan} & was/were having a meal \\
+            \hline
+            \end{tabularx}
+            \end{center}
+            
+        \end{alertblock}
+    
+
+\end{frame}
+
+\begin{frame}{How tokenization helps}
+    \begin{columns}[onlytextwidth]
+    
+        \begin{column}{0.48\textwidth}
+        \vspace{-10pt}
+            \justify{\small
+            Separating affixes from root words will ‘tell’ the model that all it has to do is to join these affixes to root words to create different meanings.
+            \par \vspace{5pt}
+            If done properly, tokenization allows for efficient feature extraction.
+            \par \vspace{5pt}
+            In this example, tokenization separates the root word from its affixes beforehand.
+            \par \vspace{5pt}
+            This allows the model to see affixes and root words as parts of a word instead of seeing the different inflections as different words completely.
+            }
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+        \vspace{-10pt}
+            \begin{alertblock}{\small \textbf{Possible tokenization}}
+                \vspace{5pt}
+                \begin{center}
+                \begin{tabularx}{0.95\textwidth}    
+                {
+                    | >{\RaggedRight\arraybackslash}X
+                    | >{\RaggedRight\arraybackslash}X |
+                }
+                \hline
+                \textbf{\small Word} & \textbf{\small Token string} \\
+                \hline
+                makan & m | akan \\
+                \hline
+                taakanon & ta | akan | on \\
+                \hline
+                miakan & mi | akan \\
+                \hline
+                mangakan & mang | akan \\
+                \hline
+                minakan & m | in | akan \\
+                \hline
+                \end{tabularx}
+                \par
+                \vspace{5pt}
+                {\small The | symbol delineates each token.}
+                \end{center}
+            \end{alertblock}
+        \end{column}
+        
+    \end{columns}
+\end{frame}
+
+\definecolor{uiored}{HTML}{004B84}
+\definecolor{utpgold}{RGB}{206, 154, 54}
+\definecolor{white}{HTML}{FFFFFF}
+\setbeamercolor{background canvas}{bg = uiored}
+\begin{frame}[plain]
+    \vspace{2.6cm}
+    \begin{center}
+    \Huge
+        \textcolor{utpgold}{\textbf{Forward propagation, backpropagation,\\ \& gradient descent}}
+    \end{center}
+\end{frame}
+\setbeamercolor{background canvas}{bg = white}
+
+\subsection{Forward pass, backpropagation, \& gradient descent}
+\begin{frame}
+    \begin{columns}[onlytextwidth]
+        
+        \begin{column}{0.5\textwidth}
+            \vspace{-0.8cm}
+            \begin{alertblock}{\small \textbf{What we need}}
+                \justify{\small
+                Forward pass or \alert{forward propagation} is done to find the \alert{objective function}. \par \vspace{5pt}
+                Backpropagation is done to find the gradient of network parameters\footnotemark. Here, we are finding the partial derivative of the objective function with respect to the weights. \par \vspace{5pt}  
+                }
+            \end{alertblock}
+            \vspace{-0.6cm}
+            \begin{alertblock}{\small \textbf{The goal}}
+                \justify{\small
+                The process that eventually optimizes the weights is called \alert{gradient descent}. \par This algorithm requires the partial derivative of the objective function with respect to the model parameters.
+                }
+            \end{alertblock}
+        \end{column}
+
+        \begin{column}{0.5\textwidth}
+
+            \includegraphics[width = \textwidth, scale = 0.5]{figures/contourplot.png}
+        \end{column}
+
+    
+    \end{columns}
+
+    \footnotetext{\par A \alert{parameter} of a network is any quantity that is tuned by the network during training. \par
+    Weights and biases are parameters. In contrast, \alert{hyperparameters} are quantities that we choose.}
+\end{frame}
+
+\begin{frame}{Example}
+
+    \begin{columns}[onlytextwidth]
+
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \vspace{-1cm}
+                \includegraphics[width = \textwidth, scale = 0.5]{figures/fwdpassgraph.jpg}
+                \caption{\small Computational graph representation of forward propagation}
+            \end{figure}
+            \justify{\small
+            For a single-hidden-layer perceptron without a bias term
+            }
+            \begin{equation*}
+                \frac{\partial J}{\partial \textbf{W}^{(1)}}
+                 = \frac{\partial J}{\partial \textbf{z}}  \textbf{x}^\intercal + \lambda\textbf{W}^{(1)} 
+            \end{equation*}
+
+        \end{column}
+
+        \begin{column}{0.47\textwidth}
+            \vspace{-7pt}
+            \begin{equation*}
+                \frac{\partial J}{\partial \textbf{W}^{(2)}}
+                 = \frac{\partial J}{\partial \textbf{o}} \textbf{h}^\intercal + \lambda\textbf{W}^{(2)}
+            \end{equation*}
+            \justify{ \small
+            where $J$ is the objective function, $\textbf{W}^{(1)}$, $\textbf{W}^{(2)}$ are weight tensors for the hidden layer and output layer respectively. $\textbf{x}$ is the input, $\textbf{z}$ is the hidden layer transformation on $\textbf{x}$, $\textbf{o}$ is the output, and $\textbf{h} = \phi(\textbf{z})$, with $\phi$ representing the activation function.
+            }
+            \begin{equation*}
+                J = \ell(\textbf{o}, y) + s
+            \end{equation*}
+            \justify{\small
+            $y$ is the label and $s$ is the regularization term that helps to prevent underfitting and overfitting.
+            }
+        \end{column}
+    
+    \end{columns}
+    
+\end{frame}
+
+\section{Activity: Tokenization with Tensorflow}
+\SectionPage
+
+\begin{frame}{Tokenizers}
+  \begin{alertblock}{\textbf{Task 1}}
+      Open the Google Colab notebook link which will be given to you. Each participant will be given unique notebooks. \par \vspace{5pt}
+      Acquire text and perform \textbf{whitespace tokenization}, \par as well as \textbf{Unicode Script tokenization}. \par \vspace{5pt}
+      You may use any \alert{grammatical English} text that you can find or generate. \par \vspace{5pt}
+      Observe the output of the \alert{whitespace tokenizer}. Why were the punctuation marks not tokenized separately? \par
+      Observe the output of the \alert{Unicode Script tokenizer}. Why were the punctuation marks tokenized separately?
+  \end{alertblock}
+
+\end{frame}
+
+\begin{frame}{Tokenizers}
+     \begin{alertblock}{\textbf{Task 2}}
+      Acquire an excerpt of Chinese text and perform \textbf{whole-word tokenization}. \par \vspace{5pt}
+      \alert{You may use Google Translate} or other text that you can find or generate. 
+      \par \vspace{5pt}
+      Observe the output.
+      \par
+      Why do you think this is called whole-word tokenization?
+  \end{alertblock}
+
+    \begin{alertblock}{\textbf{Task 3}}
+        Train a tokenizer on Kadazandusun text using the SentencePiece library. \par \vspace{5pt}
+        Observe the output.
+        \par
+        Why do you think the tokenization performed is called subword tokenization? \par
+        The dataset contains 22,485 words. How many words in a dataset do you think it will take to create a Kadazandusun ChatGPT?
+    \end{alertblock}
+
+\end{frame}
+
+
+\section{Explore Tensorflow Projector \& Hugging Face}
+\SectionPage
+
+\begin{frame}{Explore}
+   \begin{alertblock}{\textbf{Visualize word embeddings}}
+       Go to \url{projector.tensorflow.org} and explore. \par \vspace{5pt}
+       Can you explain what is being shown?
+   \end{alertblock}
+
+   \begin{alertblock}{\textbf{Discover Hugging Face}}
+       Go to  \url{huggingface.co} and sign up through your Google account if you don't have an account yet. \par \vspace{5pt}
+       Explore the demos you find the most interesting. 
+   \end{alertblock}
+   
+\end{frame}
+
+\section{Further reading}
+\begin{frame}{Further reading}
+    \begin{columns}[onlytextwidth]
+        \begin{column}{0.55\textwidth}
+        \vspace{-10pt}
+            \justify{\small
+                You don't need a lot of mathematical background to be involved in AI and machine learning, but it helps to brush up on linear algebra.
+            }
+            \vspace{10pt}
+            \begin{enumerate}
+                \item K. Kuttler. \emph{A First Course in Linear Algebra}. \url{lyryx.com/first-course-linear-algebra/}
+
+                \item J. Gareth, D. Witten, T. Hastie, R. Tibshirani, and J. Taylor. \emph{An Introduction to Statistical Learning}. \url{statlearning.com}
+
+                \item \emph{Dive into Deep Learning} \url{d2l.ai}
+            \end{enumerate}
+        \end{column}
+
+        \begin{column}{0.45\textwidth}
+        \vspace{-10pt}
+            \begin{figure}
+            \includegraphics[width = 0.7\textwidth, scale = 0.5]{figures/uni.jpg}
+            \end{figure}
+        \end{column}
+        
+        
+    \end{columns}
+\end{frame}
+
+\end{document}
